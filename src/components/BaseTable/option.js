@@ -1,12 +1,10 @@
-export const  option = {
-  border: true,
-  labelWidth: '100px',
+// 表格配置
+export const option = {
   column: [
     {
       prop: 'number',
       label: '数量',
       type: 'select',
-      placeholder: '数量',
       dic: [
         {
           label: '全部',
@@ -19,11 +17,6 @@ export const  option = {
         {
           label: '两个',
           value: '2'
-        }
-      ],
-      rules: [
-        {
-          required: true
         }
       ]
     },
@@ -41,13 +34,8 @@ export const  option = {
           value: '0'
         }
       ],
-      rules: [
-        {
-          required: true
-        }
-      ],
-      formatText(val) {
-        console.log(val)
+      format(val) {
+        return 1213
       }
     },
     {
@@ -68,11 +56,6 @@ export const  option = {
           value: '3'
         }
       ],
-      rules: [
-        {
-          required: true
-        }
-      ]
     },
     {
       prop: 'address',
@@ -107,18 +90,33 @@ export const  option = {
             }
           ]
         }
-      ],
-      rules: [
-        {
-          required: true
-        }
       ]
-    },
-    {
-      prop: 'date',
-      type: 'date',
-      label: '日期',
-      span: 8
     }
   ]
 }
+export const tableData = [
+  {
+    number: '1',
+    sex: '1',
+    hobby: '1',
+    address: 'fujian'
+  },
+  {
+    number: '2',
+    sex: '0',
+    hobby: '2',
+    address: 'xiamen'
+  },
+  {
+    number: '',
+    sex: '1',
+    hobby: '3',
+    address: 'hangzhou'
+  },
+  {
+    number: '2',
+    sex: '0',
+    hobby: '3',
+    address: 'shaoxing'
+  }
+]

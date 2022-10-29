@@ -31,7 +31,15 @@ const mdSpan = computed(() => {
   }
 })
 const menuSpan = computed(() => {
-  return option.menuSpan || 6
+  return option.menuSpan || option.span || 6
+})
+const labelWidth = computed(() => {
+  return (colLabelWidth) => {
+    return option.labelWidth || colLabelWidth
+  }
+})
+const menuMarginLeft = computed(() => {
+  return option.labelWidth || `50px`
 })
 
 const formSize = computed(() => {
@@ -88,18 +96,18 @@ function resetForm() {
       :model="form"
       :size="formSize"
       :label-position="labelPosition"
-      :label-width="option.labelWidth">
+      :label-width="labelWidth(0)">
     <el-row>
       <el-col
           v-for="(column, index) in option.column"
           :key="column.prop"
-          :md="mdSpan(column.span)"
+          :lg="mdSpan(column.span)"
           :sm="12"
           :xs="24">
         <el-form-item
             :label="column.label"
             :prop="column.prop"
-            :label-width="column.labelWidth"
+            :label-width="labelWidth(column.labelWidth)"
             :rules="column.rules">
           <component
               range-separator="至"
@@ -120,10 +128,10 @@ function resetForm() {
       </el-col>
       <el-col
           v-if="isShowBtn"
-          :md="menuSpan"
+          :lg="menuSpan"
           :sm="12"
           :xs="24">
-        <el-form-item label-width="50px">
+        <el-form-item :label-width="menuMarginLeft">
           <slot name="menu">
             <el-button
                 v-if="isShowResetBtn"
