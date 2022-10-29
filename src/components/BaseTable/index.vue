@@ -1,7 +1,7 @@
 <script setup name="BaseTable">
-import {computed, reactive, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 
-const { data, option, rowClassName } = defineProps({
+const { data, option, rowClassName, mergeKeys, tableColSpan } = defineProps({
   data: {
     type: Array,
     default: () => []
@@ -12,14 +12,17 @@ const { data, option, rowClassName } = defineProps({
       return {}
     }
   },
-  rowClassName: Function
+  rowClassName: Function,
+  mergeKeys: {
+    type: Array,
+    default: () => []
+  },
+  tableColSpan: Function
 })
-
-const emit = defineEmits(['row-click'])
+const emit = defineEmits(['row-click', 'selection', 'select-all', 'selection-change'])
 
 const table = ref()
 const tableLoading = ref(false)
-
 const indexLabel = computed(() => {
   return option.indexLabel || '序号'
 })
@@ -29,25 +32,13 @@ const colAlign = computed(() => {
   }
 })
 
-// 显示表格格子里的内容
+
+// 格式化表格内容
 function formatHandle(fn, val) {
   return fn(val) ?? val
 }
-const isShowDicText = computed(() => {
-  return (dic) => {
-    return dic?.length
-  }
-})
-const dicText = computed(() => {
-  return (val, dic, childProp) => {
-    if(hasChildren(dic)) {
-      return findChildrenLabel(val, dic, childProp)
-    } else {
-      return findLabel(val, dic)
-    }
-  }
-})
-function hasChildren(dic) {
+// 自动显示有 dic 项的表格内容
+function isHasChildren(dic) {
   return dic.filter(({children}) => {
     return children
   })?.length
@@ -79,26 +70,119 @@ function findChildrenLabel(val, dic, childProp) {
   })
   return flatObj[val] || val
 }
+const isShowDicText = computed(() => {
+  return (dic) => {
+    return dic?.length
+  }
+})
+const dicText = computed(() => {
+  return (val, dic, childProp) => {
+    if(isHasChildren(dic)) {
+      return findChildrenLabel(val, dic, childProp)
+    } else {
+      return findLabel(val, dic)
+    }
+  }
+})
+
+
+// 表格合并
+let rowSpanObj
+const tableData = computed(() => {
+  return data
+})
+watch(tableData, (newVal) => {
+  if (mergeKeys.length) {
+    rowSpanObj = handleTableSpan(mergeKeys, newVal)
+  }
+}, {
+  immediate: true
+})
+function handleTableSpan(mergeKeys, tableData) {
+  const spanObj = {}
+  if (mergeKeys instanceof Array && tableData instanceof Array && mergeKeys.length && tableData.length) {
+    mergeKeys.forEach((key, keyIndex) => {
+      spanObj[key] = []
+      let position = 0
+      tableData.forEach((item, index) => {
+        if (index === 0) {
+          spanObj[key].push(1)
+          position = 0
+        } else {
+          const isObj = tableData[index][key] instanceof Array || tableData[index][key] instanceof Object
+          if (isKeysMerge(tableData, index, mergeKeys, keyIndex, isObj)) {
+            spanObj[key][position] += 1
+            spanObj[key].push(0)
+          } else {
+            spanObj[key].push(1)
+            position = index
+          }
+        }
+      })
+    })
+    return spanObj
+  }
+}
+function isKeysMerge(tableData, index, mergeKeys, keyIndex, isObj) {
+  if (keyIndex < 0) return true
+  if (isObj) {
+    return (
+        JSON.stringify(tableData[index][mergeKeys[keyIndex]]) ===
+        JSON.stringify(tableData[index - 1][mergeKeys[keyIndex]]) &&
+        isKeysMerge(tableData, index, mergeKeys, keyIndex - 1, isObj)
+    )
+  } else {
+    return (
+        tableData[index][mergeKeys[keyIndex]] === tableData[index - 1][mergeKeys[keyIndex]] &&
+        isKeysMerge(tableData, index, mergeKeys, keyIndex - 1, isObj)
+    )
+  }
+}
+function handleObjectSpanMethod(tableObj, mergeKeys, rowspanObj) {
+  if (mergeKeys instanceof Array && rowspanObj instanceof Object) {
+    const { row, column, rowIndex, columnIndex } = tableObj
+    for (let i = 0; i < mergeKeys.length; i++) {
+      let term = column.property === mergeKeys[i]
+      if (term) {
+        const _row = rowspanObj[mergeKeys[i]][rowIndex]
+        let _col
+        // 自定义设置合并列时使用该方法
+        if (tableColSpan && tableColSpan(tableObj)) {
+          _col = tableColSpan(tableObj)
+        } else {
+          _col = _row > 0 ? 1 : 0
+        }
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+    }
+  }
+}
+function tableSpanMethod(tableObj) {
+  return handleObjectSpanMethod(tableObj, mergeKeys, rowSpanObj)
+}
+
 
 function tableRowClassName(param) {
   if (typeof rowClassName === 'function') {
     return rowClassName(param)
   }
 }
-
-function tableSpanMethod() {}
-
-function rowClick(row, event, column) {
-  emit('row-click', row, event, column)
+function rowClick(row, column, event) {
+  emit('row-click', row, column, event)
 }
-
 function select(selection, row) {
-  // this.$emit('select', selection, row)
+  emit('select', selection, row)
+}
+function selectAll(selection) {
+  emit('select-all', selection)
+}
+function selectionChange(selection) {
+  emit('selection-change', selection)
 }
 
-function selectAll() {}
-
-function selectionChange() {}
 </script>
 
 <template>

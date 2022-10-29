@@ -33,10 +33,7 @@ export const option = {
           label: '女',
           value: '0'
         }
-      ],
-      format(val) {
-        return 1213
-      }
+      ]
     },
     {
       prop: 'hobby',
@@ -97,7 +94,7 @@ export const option = {
 export const tableData = [
   {
     number: '1',
-    sex: '1',
+    sex: '0',
     hobby: '1',
     address: 'fujian'
   },
@@ -115,7 +112,7 @@ export const tableData = [
   },
   {
     number: '2',
-    sex: '0',
+    sex: '1',
     hobby: '3',
     address: 'shaoxing'
   }
