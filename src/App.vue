@@ -6,6 +6,6 @@ import Layout from '@/components/Layout/index.vue'
   <router-view></router-view>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

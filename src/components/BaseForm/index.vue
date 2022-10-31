@@ -5,7 +5,7 @@ import MySelect from './module/MySelect.vue'
 import MyCheckbox from './module/MyCheckbox.vue'
 import MyCascader from './module/MyCascader.vue'
 import MyDate from './module/MyDate.vue'
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 
 // 使用 ref api，只要变量名与 dom 上的 ref 一致就可以
 const formRef = ref()

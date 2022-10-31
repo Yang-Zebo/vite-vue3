@@ -164,7 +164,7 @@ function tableSpanMethod(tableObj) {
   return handleObjectSpanMethod(tableObj, mergeKeys, rowSpanObj)
 }
 
-
+// element 表格方法与属性
 function tableRowClassName(param) {
   if (typeof rowClassName === 'function') {
     return rowClassName(param)

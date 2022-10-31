@@ -27,9 +27,9 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      sass: {
+      scss: {
         // 配置全局的 scss 样式
-        additionalData: '@use "@/styles/variables.scss" as *;'
+        additionalData: '@use "./src/styles/variables.scss" as *;'
       }
     },
   }

@@ -1,4 +1,4 @@
-<script setup name="navbar">
+<script setup name="NavBar">
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 // 表格配置
 export const option = {
+  border: true,
   column: [
     {
       prop: 'number',
@@ -101,7 +102,7 @@ export const tableData = [
   {
     number: '2',
     sex: '0',
-    hobby: '2',
+    hobby: '3',
     address: 'xiamen'
   },
   {
