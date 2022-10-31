@@ -1,8 +1,16 @@
 <script setup>
+import BaseDialog from '@/components/BaseDialog/index.vue'
+function doConfirm() {
+  console.log(11)
+}
 </script>
 
 <template>
-  <div class="card-container">3</div>
+  <div class="card-container">
+    <BaseDialog :doConfirm="doConfirm">
+
+    </BaseDialog>
+  </div>
 </template>
 
 <style lang="scss" scoped>

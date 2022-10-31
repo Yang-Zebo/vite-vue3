@@ -1,6 +1,6 @@
 <script setup name="BaseDialog">
 import { ref } from 'vue'
-const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText } = defineProps({
+const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText,  doConfirm} = defineProps({
   btnText: {
     type: String,
     default: 'Button'
@@ -28,6 +28,9 @@ const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText }
   confirmText: {
     type: String,
     default: 'Confirm'
+  },
+  doConfirm: {
+    type: Function
   }
 })
 
@@ -40,14 +43,22 @@ function closeDialog() {
   dialogVisible.value = false
 }
 function confirmHandle() {
-  dialogVisible.value = false
+  try {
+    doConfirm && doConfirm()
+  } catch (err){
+    console.log(err)
+  } finally {
+    dialogVisible.value = false
+  }
 }
 </script>
 
 <template>
-  <slot name="button" :type="btnType" :size="btnSize" :btnText="btnText" :openDialog="openDialog">
-    <el-button :type="btnType" :size="btnSize" @click="openDialog">{{ btnText }}</el-button>
-  </slot>
+  <div @click="openDialog">
+    <slot name="button" :type="btnType" :size="btnSize" :btnText="btnText" :openDialog="openDialog">
+      <el-button :type="btnType" :size="btnSize" >{{ btnText }}</el-button>
+    </slot>
+  </div>
   <el-dialog v-model="dialogVisible" :title="title" :width="dialogWidth" draggable>
     <template #header="{close, titleId, titleClass}">
       <slot name="header" :close="close" :titleId="titleId" :titleClass="titleClass"></slot>
