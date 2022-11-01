@@ -1,6 +1,5 @@
 <script setup>
 import BaseForm from '@/components/BaseForm/index.vue'
-import BaseDialog from '@/components/BaseDialog/index.vue'
 import { option } from '@/components/BaseForm/option.js'
 import { reactive } from 'vue'
 const form = reactive({})

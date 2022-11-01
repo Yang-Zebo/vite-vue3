@@ -238,6 +238,19 @@ function selectionChange(selection) {
         :fixed="column.fixed || false">
       <template #default="scope">
         <slot v-bind="scope" :name="column.prop">
+<!--          <div v-if="column.ipt" class="el-form-item" :class="[{'is-error': isError}]">
+            <div class="el-form-item__content">
+              <slot>
+                <el-input v-model="scope.row[column.prop]"></el-input>
+              </slot>
+              <div
+                  v-if="isError"
+                  class="el-form-item__error"
+              >
+                {{ validateMessage }}
+              </div>
+            </div>
+          </div>-->
           <span v-if="column.format">
               {{ formatHandle(column.format, scope.row[column.prop])}}
           </span>
