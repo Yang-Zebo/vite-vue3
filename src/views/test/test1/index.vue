@@ -10,8 +10,6 @@ const form = reactive({})
 <template>
   <div class="card-container">
     <base-form :option="option" :form="form"></base-form>
-    <BaseDialog>
-    </BaseDialog>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
-<script setup name="BaseDialog">
-import { ref } from 'vue'
-const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText,  doConfirm} = defineProps({
+<script setup name="DialogBtn">
+import {reactive, ref} from 'vue'
+const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText, doConfirm, showFooter, maxHeight, minHeight } = defineProps({
   btnText: {
     type: String,
     default: 'Button'
@@ -31,10 +31,26 @@ const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText, 
   },
   doConfirm: {
     type: Function
-  }
+  },
+  showFooter: {
+    type: Boolean,
+    default: true
+  },
+  minHeight: {
+    type: String,
+    default: '100px'
+  },
+  maxHeight: String
 })
 
 const dialogVisible = ref(false)
+const bodyStyle = reactive({
+  'max-height': maxHeight,
+  'min-height': minHeight,
+  overflowY: 'auto',
+  overflowX: 'hidden'
+})
+const loading = ref(false)
 
 function openDialog() {
   dialogVisible.value = true
@@ -44,13 +60,16 @@ function closeDialog() {
 }
 function confirmHandle() {
   try {
+    loading.value = true
     doConfirm && doConfirm()
   } catch (err){
     console.log(err)
   } finally {
+    loading.value = false
     dialogVisible.value = false
   }
 }
+
 </script>
 
 <template>
@@ -59,17 +78,19 @@ function confirmHandle() {
       <el-button :type="btnType" :size="btnSize" >{{ btnText }}</el-button>
     </slot>
   </div>
-  <el-dialog v-model="dialogVisible" :title="title" :width="dialogWidth" draggable>
+  <el-dialog v-model="dialogVisible" :title="title" :width="dialogWidth" append-to-body draggable>
     <template #header="{close, titleId, titleClass}">
       <slot name="header" :close="close" :titleId="titleId" :titleClass="titleClass"></slot>
     </template>
-    <slot>
-      Content
-    </slot>
-    <template #footer>
-      <slot name="footer" :closeDialog="closeDialog" :dialogVisible="dialogVisible">
+    <div :style="bodyStyle">
+      <slot>
+        Content
+      </slot>
+    </div>
+    <template v-if="showFooter" #footer>
+      <slot name="footer" :closeDialog="closeDialog">
         <el-button @click="closeDialog">{{ cancelText }}</el-button>
-        <el-button type="primary" @click="confirmHandle">
+        <el-button type="primary" :loading="loading" @click="confirmHandle">
           {{ confirmText }}
         </el-button>
       </slot>
