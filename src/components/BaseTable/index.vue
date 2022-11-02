@@ -183,6 +183,20 @@ function selectionChange(selection) {
   emit('selection-change', selection)
 }
 
+// 表格校验
+const validateObj = computed(() => {
+  return (rules, value) => {
+    for(let key in rules) {
+      const ruleItem = rules[key]
+      const validate = ruleItem?.validate(value)
+      if(!validate) {
+        return ruleItem?.message
+      }
+    }
+    return false
+  }
+})
+
 </script>
 
 <template>
@@ -238,20 +252,17 @@ function selectionChange(selection) {
         :fixed="column.fixed || false">
       <template #default="scope">
         <slot v-bind="scope" :name="column.prop">
-<!--          <div v-if="column.ipt" class="el-form-item" :class="[{'is-error': isError}]">
-            <div class="el-form-item__content">
-              <slot>
-                <el-input v-model="scope.row[column.prop]"></el-input>
-              </slot>
-              <div
-                  v-if="isError"
-                  class="el-form-item__error"
-              >
-                {{ validateMessage }}
-              </div>
-            </div>
-          </div>-->
-          <span v-if="column.format">
+          <div v-if="column.ipt" class="self-input-item">
+             <el-input v-model="scope.row[column.prop]"></el-input>
+             <div class="error-message-box">
+               <Transition name="error">
+                 <div v-if="validateObj(column.tableRules, scope.row[column.prop])" class="error-message">
+                   {{ validateObj(column.tableRules, scope.row[column.prop]) }}
+                 </div>
+               </Transition>
+             </div>
+          </div>
+          <span v-else-if="column.format">
               {{ formatHandle(column.format, scope.row[column.prop])}}
           </span>
           <span v-else-if="isShowDicText(column.dic)">
@@ -265,4 +276,29 @@ function selectionChange(selection) {
 </template>
 
 <style lang="scss" scoped>
+.self-input-item {
+  .el-input {
+    margin-bottom: 15px;
+  }
+  .error-message-box {
+    position: absolute;
+    bottom: 0px;
+    height: 24px;
+    .error-message {
+      font-size: 12px;
+      color: $color-danger;
+    }
+  }
+}
+
+.error-enter-active,
+.error-leave-active {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.error-enter-from,
+.error-leave-to {
+  opacity: 0;
+}
 </style>

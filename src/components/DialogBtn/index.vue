@@ -1,6 +1,6 @@
 <script setup name="DialogBtn">
 import {reactive, ref} from 'vue'
-const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText, doConfirm, showFooter, maxHeight, minHeight } = defineProps({
+const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText, doConfirm, showFooter, maxHeight, minHeight, isText } = defineProps({
   btnText: {
     type: String,
     default: 'Button'
@@ -40,7 +40,11 @@ const { btnText, btnType, btnSize, dialogWidth, title, cancelText, confirmText, 
     type: String,
     default: '100px'
   },
-  maxHeight: String
+  maxHeight: String,
+  isText: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const dialogVisible = ref(false)
@@ -74,8 +78,8 @@ function confirmHandle() {
 
 <template>
   <div @click="openDialog">
-    <slot name="button" :type="btnType" :size="btnSize" :btnText="btnText" :openDialog="openDialog">
-      <el-button :type="btnType" :size="btnSize" >{{ btnText }}</el-button>
+    <slot name="button">
+      <el-button :type="btnType" :size="btnSize" :text="isText">{{ btnText }}</el-button>
     </slot>
   </div>
   <el-dialog v-model="dialogVisible" :title="title" :width="dialogWidth" append-to-body draggable>

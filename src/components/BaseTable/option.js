@@ -1,3 +1,5 @@
+import { mustExist } from '@/utils/vaildate.js'
+
 // 表格配置
 export const option = {
   border: true,
@@ -6,6 +8,19 @@ export const option = {
       prop: 'number',
       label: '数量',
       type: 'select',
+      ipt: true,
+      tableRules: [
+        {
+          validate: mustExist,
+          message: '错误信息，错误信息'
+        },
+        {
+          validate: function (value) {
+            return value < 10
+          },
+          message: '输入的数字需要小于10'
+        }
+      ],
       dic: [
         {
           label: '全部',
@@ -106,7 +121,7 @@ export const tableData = [
     address: 'xiamen'
   },
   {
-    number: '',
+    number: '1',
     sex: '1',
     hobby: '3',
     address: 'hangzhou'

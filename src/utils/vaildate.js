@@ -6,6 +6,11 @@ export function isURL(value) {
     return reg.test(value)
 }
 
+// 是否存在
+export function mustExist(value) {
+    return !!value
+}
+
 // 小写字母
 export function isLowerCase(value) {
     const reg = /^[a-z]+$/
@@ -19,7 +24,7 @@ export function isUpperCase(value) {
 }
 
 // 验证邮箱
-export function isEmail(value) {
+export function isEmail1(value) {
     const reg = /^([a-zA-Z\d_-])+@([a-zA-Z\d_-])+(.[a-zA-Z\d_-])+/
     return reg.test(value)
 }
@@ -30,7 +35,7 @@ export function isIntAndZero(value) {
 }
 
 // 手机号验证
-export function isPhone(value) {
+export function isPhone1(value) {
     const reg = /^1[3|4|5|7|8|9]\d\d{8}$/
     return reg.test(value)
 }
@@ -66,7 +71,7 @@ export function validateNotNegative(value) {
 //适用element-ui库 的自定义校验方法
 
 // 是否为大陆手机号
-export function isPhone(rule, value, callback) {
+export function isPhone2(rule, value, callback) {
     const reg = /^1[3|4|5|7|8]\d\d{8}$/
     const rsCheck = reg.test(value)
     if (!rsCheck) {
@@ -160,7 +165,7 @@ export function isCommonCharacters(rule, value, callback) {
 }
 
 /* 邮件*/
-export function isEmail(rule, value, callback) {
+export function isEmail2(rule, value, callback) {
     const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/
     const rsCheck = reg.test(value)
     if (!rsCheck) {
