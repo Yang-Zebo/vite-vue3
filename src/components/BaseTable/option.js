@@ -39,7 +39,6 @@ export const option = {
     {
       prop: 'sex',
       label: '性别',
-      type: 'radio',
       dic: [
         {
           label: '男',
@@ -54,7 +53,6 @@ export const option = {
     {
       prop: 'hobby',
       label: '爱好',
-      type: 'checkbox',
       dic: [
         {
           label: '篮球',
@@ -73,7 +71,6 @@ export const option = {
     {
       prop: 'address',
       label: '地址',
-      type: 'cascader',
       dic: [
         {
           label: '福建',

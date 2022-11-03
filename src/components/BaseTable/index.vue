@@ -1,6 +1,7 @@
 <script setup name="BaseTable">
-import {computed, ref, watch} from 'vue'
-
+import { computed, ref, watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import 'element-plus/es/components/message/style/css'
 const { data, option, rowClassName, mergeKeys, tableColSpan } = defineProps({
   data: {
     type: Array,
@@ -21,7 +22,7 @@ const { data, option, rowClassName, mergeKeys, tableColSpan } = defineProps({
 })
 const emit = defineEmits(['row-click', 'selection', 'select-all', 'selection-change'])
 
-const table = ref()
+const table = ref(null)
 const tableLoading = ref(false)
 const indexLabel = computed(() => {
   return option.indexLabel || '序号'
@@ -31,7 +32,6 @@ const colAlign = computed(() => {
     return colAlign || option.align
   }
 })
-
 
 // 格式化表格内容
 function formatHandle(fn, val) {
@@ -184,17 +184,43 @@ function selectionChange(selection) {
 }
 
 // 表格校验
-const validateObj = computed(() => {
-  return (rules, value) => {
+// 返回校验不通过的消息并且设置表格数据'$validate'
+const validateMsg = computed(() => {
+  return (rules, row, prop) => {
+    if(!Reflect.has(row, '$validate')) {
+      Reflect.set(row, '$validate', {})
+    }
     for(let key in rules) {
       const ruleItem = rules[key]
-      const validate = ruleItem?.validate(value)
+      const validate = ruleItem?.validate(row[prop]) ?? false
       if(!validate) {
+        Reflect.set(row['$validate'], prop, false)
         return ruleItem?.message
       }
     }
+    Reflect.set(row['$validate'], prop, true)
     return false
   }
+})
+function validate() {
+  const validateArr = data.reduce((preValue, { $validate }) => {
+    const validate = Object.values($validate)
+    return [...preValue, ...validate]
+  }, [])
+  const unAdopt = validateArr.some(item => {
+    return item === false
+  })
+  if(unAdopt) {
+    ElMessage({
+      message: '校验不通过',
+      type: 'warning',
+    })
+    return false
+  }
+  return true
+}
+defineExpose({
+  validate
 })
 
 </script>
@@ -256,8 +282,8 @@ const validateObj = computed(() => {
              <el-input v-model="scope.row[column.prop]"></el-input>
              <div class="error-message-box">
                <Transition name="error">
-                 <div v-if="validateObj(column.tableRules, scope.row[column.prop])" class="error-message">
-                   {{ validateObj(column.tableRules, scope.row[column.prop]) }}
+                 <div v-if="validateMsg(column.tableRules, scope.row, column.prop)" class="error-message">
+                   {{ validateMsg(column.tableRules, scope.row, column.prop) }}
                  </div>
                </Transition>
              </div>
