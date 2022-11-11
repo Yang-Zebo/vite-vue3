@@ -12,10 +12,10 @@ const { options } = defineProps({
 <template>
   <el-select>
     <el-option
-        v-for="({ label, value }) in options"
-        :key="value"
-        :label="label"
-        :value="value"
+      v-for="({ label, value }) in options"
+      :key="value"
+      :label="label"
+      :value="value"
     />
   </el-select>
 </template>

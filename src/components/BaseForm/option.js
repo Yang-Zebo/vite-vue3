@@ -1,4 +1,4 @@
-export const  option = {
+export const option = {
   border: true,
   labelWidth: '100px',
   column: [

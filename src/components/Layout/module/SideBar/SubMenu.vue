@@ -1,6 +1,7 @@
-<script setup name="SubMenu">
+<script name="SubMenu" setup>
 import { inject, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -11,10 +12,9 @@ const { subMenuList } = defineProps({
     default: () => []
   }
 })
-
 const howChild = computed(() => {
   return (children) => {
-    const showChildArr = children?.filter((item) =>{
+    const showChildArr = children?.filter((item) => {
         return !item.hidden
       }
     )
@@ -23,7 +23,12 @@ const howChild = computed(() => {
 })
 const nowChild = computed(() => {
   return (children) => {
-    const { name, children: child, meta, hidden } = children[0]
+    const {
+      name,
+      children: child,
+      meta,
+      hidden
+    } = children[0]
     return {
       name,
       children: child,
@@ -33,7 +38,7 @@ const nowChild = computed(() => {
   }
 })
 function to(name) {
-  if(route.name === name) {
+  if (route.name === name) {
     // 刷新layout的 router-view
     refresh()
     return
@@ -56,7 +61,9 @@ function to(name) {
           </template>
           <sub-menu :subMenuList="children"></sub-menu>
         </el-sub-menu>
-        <el-menu-item v-else-if="howChild(children) === 1" :index="nowChild(children).name" @click="to(nowChild(children).name)">
+        <el-menu-item v-else-if="howChild(children) === 1"
+                      :index="nowChild(children).name"
+                      @click="to(nowChild(children).name)">
           <i :class="nowChild(children).meta.icon"></i>
           <span>{{ nowChild(children).meta.title }}</span>
         </el-menu-item>

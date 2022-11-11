@@ -12,10 +12,11 @@ const { options } = defineProps({
 <template>
   <el-radio-group>
     <el-radio
-        v-for="({ label, value }) in options"
-        :key="value"
-        :label="value"
-    >{{ label }}</el-radio>
+      v-for="({ label, value }) in options"
+      :key="value"
+      :label="value"
+    >{{ label }}
+    </el-radio>
   </el-radio-group>
 
 </template>

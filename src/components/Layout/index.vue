@@ -1,7 +1,8 @@
-<script setup name="Layout">
+<script name="Layout" setup>
 import SideBar from './module/SideBar/index.vue'
 import NavBar from './module/NavBar/index.vue'
 import { ref, nextTick, provide } from 'vue'
+
 
 const show = ref(true)
 function refresh() {
@@ -25,7 +26,7 @@ provide('refresh', refresh)
       <el-main>
         <router-view v-slot="{ Component }">
           <transition name="fade">
-            <component v-if="show" :is="Component" />
+            <component :is="Component" v-if="show" />
           </transition>
         </router-view>
       </el-main>
@@ -33,25 +34,31 @@ provide('refresh', refresh)
   </el-container>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .el-container {
   height: 100%;
+
   .el-aside {
     height: 100%;
     width: 200px;
   }
+
   .el-container {
     .el-header {
       padding: 0;
     }
+
     .el-main {
       overflow: hidden;
+
       .fade-enter-active {
         transition: all 0.8s ease-out;
       }
+
       .fade-leave-active {
         transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
       }
+
       .fade-enter-from,
       .fade-leave-to {
         transform: translateX(80px);

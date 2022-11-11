@@ -1,5 +1,6 @@
-/*
 import Promise from 'bluebird'
+
+
 Promise.config({
   // Enable warnings 启用警告
   warnings: false,
@@ -12,5 +13,4 @@ Promise.config({
   // Enable async hooks 启用异步挂钩
   asyncHooks: false
 });
-
-console.log('Promise', globalThis.Promise)*/
+console.log('Promise', globalThis.Promise)

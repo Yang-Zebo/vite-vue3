@@ -11,7 +11,7 @@ const { options } = defineProps({
 
 <template>
   <el-checkbox-group>
-    <el-checkbox v-for="({ label, value }) in options" :label="value">{{label}}</el-checkbox>
+    <el-checkbox v-for="({ label, value }) in options" :label="value">{{ label }}</el-checkbox>
   </el-checkbox-group>
 </template>
 

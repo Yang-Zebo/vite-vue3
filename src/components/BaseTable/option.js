@@ -1,5 +1,4 @@
 import { mustExist } from '@/utils/vaildate.js'
-
 // 表格配置
 export const option = {
   border: true,
@@ -15,7 +14,7 @@ export const option = {
           message: '错误信息，错误信息'
         },
         {
-          validate: function (value) {
+          validate: function(value) {
             return value < 10
           },
           message: '输入的数字需要小于10'
@@ -66,7 +65,7 @@ export const option = {
           label: '足球',
           value: '3'
         }
-      ],
+      ]
     },
     {
       prop: 'address',
