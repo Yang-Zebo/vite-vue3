@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "element-plus": "^2.2.19",
     "vue": "^3.2.37",
     "vue-router": "^4.1.5"
