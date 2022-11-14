@@ -1,11 +1,10 @@
 <script setup>
 import BaseForm from '@/components/BaseForm/index.vue'
-import { option } from '@/components/BaseForm/option.js'
-import { reactive } from 'vue'
+import {option} from '@/components/BaseForm/option.js'
+import {reactive} from 'vue'
 
 
 const form = reactive({})
-
 </script>
 
 <template>

@@ -11,6 +11,6 @@ Promise.config({
   // Enable monitoring 启用监视
   monitoring: true,
   // Enable async hooks 启用异步挂钩
-  asyncHooks: false
-});
-console.log('Promise', globalThis.Promise)
+  asyncHooks: false,
+})
+globalThis.Promise1 = Promise
