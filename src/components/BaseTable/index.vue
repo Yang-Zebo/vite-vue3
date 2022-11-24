@@ -1,8 +1,11 @@
 <script name="BaseTable" setup>
-import { computed, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
+import { ElMessage } from 'element-plus'
+import { computed, onMounted, ref, watch } from 'vue'
 
+onMounted(() => {
+  console.log('BaseTable')
+})
 
 const {
   data,
