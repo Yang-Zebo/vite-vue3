@@ -20,7 +20,7 @@ const handleClick = (tab, event) => {
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane v-for="item in option.tabList" :key="item.name" :label="item.label" :name="item.name">
       <slot v-if="item.name === activeName" :tab="item">
-        {{ item.label }}
+        <component :is="item.component"></component>
       </slot>
     </el-tab-pane>
   </el-tabs>

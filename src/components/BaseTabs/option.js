@@ -5,12 +5,14 @@ const option = {
     {
       name: 'BaseTable',
       label: 'BaseTable',
-      component: BaseTable
+      component: BaseTable,
+      option: []
     },
     {
       name: 'BaseForm',
       label: 'BaseForm',
-      component: BaseForm
+      component: BaseForm,
+      option: []
     }
   ]
 }
